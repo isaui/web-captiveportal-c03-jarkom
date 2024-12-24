@@ -1,0 +1,76 @@
+version: '3'
+services:
+ db:
+   image: postgres:latest
+   environment:
+     POSTGRES_DB: captiveportal
+     POSTGRES_USER: admin
+     POSTGRES_PASSWORD: password123
+   volumes:
+     - postgres_data:/var/lib/postgresql/data
+   networks:
+     - portal_network
+   ports:
+     - "5432:5432"
+
+ webapp:
+   build: ./webapp
+   environment:
+     SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/captiveportal
+     SPRING_DATASOURCE_USERNAME: admin
+     SPRING_DATASOURCE_PASSWORD: password123
+   depends_on:
+     - db
+   networks:
+     - portal_network
+   ports:
+     - "8080:8080"
+
+ router:
+   build: ./nginx
+   ports:
+     - "80:80"
+     - "443:443"
+   depends_on:
+     - webapp
+   networks:
+     portal_network:
+       ipv4_address: 172.20.0.4
+   dns:
+     - 8.8.8.8
+     - 8.8.4.4
+   cap_add:
+     - NET_ADMIN
+   volumes:
+     - ./nginx/logs:/var/log/nginx
+
+ pc-client:
+   image: alpine:latest
+   networks:
+     portal_network:
+       ipv4_address: 172.20.0.10
+   command: >
+     sh -c "
+     apk add --no-cache curl wget iputils lynx &&
+     ip route del default &&
+     ip route add default via 172.20.0.4 &&
+     echo 'nameserver 8.8.8.8' > /etc/resolv.conf &&
+     echo 'nameserver 8.8.4.4' >> /etc/resolv.conf &&
+     tail -f /dev/null"
+   depends_on:
+     - router
+   dns:
+     - 8.8.8.8
+     - 8.8.4.4
+   privileged: true
+
+volumes:
+ postgres_data:
+
+networks:
+ portal_network:
+   driver: bridge
+   ipam:
+     config:
+       - subnet: 172.20.0.0/16
+         gateway: 172.20.0.1
