@@ -15,6 +15,7 @@ services:
 
  webapp:
    build: ./webapp
+   container_name: webapp 
    environment:
      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/captiveportal
      SPRING_DATASOURCE_USERNAME: admin
