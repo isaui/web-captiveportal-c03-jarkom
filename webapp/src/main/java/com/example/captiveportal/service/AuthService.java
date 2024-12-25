@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.captiveportal.models.User;
 import com.example.captiveportal.models.UserSession;
@@ -32,6 +33,7 @@ public class AuthService {
         return userRepository.save(user);
     }
 
+    @Transactional
     public UserSession login(String username, String password, String ipAddress) {
         User user = userRepository.findByUsername(username)
             .orElseThrow(() -> new RuntimeException("User not found"));
@@ -57,6 +59,7 @@ public class AuthService {
         return sessionRepository.save(session);
     }
 
+    @Transactional
     public boolean validateSession(String sessionToken, String ipAddress) {
         Optional<UserSession> sessionOpt = sessionRepository.findBySessionToken(sessionToken);
         
@@ -80,6 +83,7 @@ public class AuthService {
         return true;
     }
 
+    @Transactional
     public void logout(String ipAddress) {
         sessionRepository.deleteByIpAddress(ipAddress);
     }
@@ -91,6 +95,6 @@ public class AuthService {
     public boolean isAuthenticated(String ipAddress) {
         Optional<UserSession> session = sessionRepository.findByIpAddress(ipAddress);
         return session.isPresent() && 
-               !LocalDateTime.now().isAfter(session.get().getCreatedAt().plusHours(2));
+               !LocalDateTime.now().isAfter(session.get().getCreatedAt().plusMinutes(5));
     }
 }
