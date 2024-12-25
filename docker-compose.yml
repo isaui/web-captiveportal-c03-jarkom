@@ -46,14 +46,13 @@ services:
      - NET_ADMIN
    volumes:
      - ./nginx/logs:/var/log/nginx
+   privileged: true
 
  pc-client:
    image: alpine:latest
    networks:
      portal_network:
        ipv4_address: 172.20.0.10
-   ports:
-      - "8000:80"
    command: >
      sh -c "
      apk add --no-cache curl wget iputils lynx elinks w3m &&

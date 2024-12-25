@@ -57,9 +57,13 @@ public class PortalController {
             return "redirect:/login";
         }
         
-        return "redirect:" + request.getHeader("X-Original-URL");
+        String originalUrl = request.getHeader("X-Original-URL");
+        if (originalUrl == null || originalUrl.isEmpty()) {
+            return "success";  // akan merender success.html
+        }
+    
+        return "redirect:" + originalUrl;
     }
-
     @GetMapping("/login")
     public String loginPage(Model model, @RequestParam(required = false) String error) {
         if (error != null) {

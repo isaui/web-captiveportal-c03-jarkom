@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+   <title>Selamat Menikmati WiFi</title>
+   <style>
+       body {
+           font-family: Arial, sans-serif;
+           margin: 0;
+           padding: 20px;
+           background-color: #f0f2f5;
+       }
+       .container {
+           max-width: 800px;
+           margin: 0 auto;
+           background: white;
+           padding: 20px;
+           border-radius: 10px;
+           box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+       }
+       h1 {
+           color: #1a73e8;
+           text-align: center;
+       }
+       .links {
+           margin-top: 20px;
+       }
+       .link-card {
+           display: block;
+           padding: 15px;
+           margin: 10px 0;
+           background: #f8f9fa;
+           border-radius: 5px;
+           text-decoration: none;
+           color: #2c2c2c;
+           transition: background 0.2s;
+       }
+       .link-card:hover {
+           background: #e9ecef;
+       }
+   </style>
+</head>
+<body>
+   <div class="container">
+       <h1>🎉 Selamat Menikmati WiFi!</h1>
+       <p style="text-align: center">Berikut beberapa situs yang mungkin ingin Anda kunjungi:</p>
+       
+       <div class="links">
+           <a th:href="@{http://google.com}" class="link-card">
+               <h3>Google</h3>
+               <p>Mesin pencari terpopuler di dunia</p>
+           </a>
+           
+           <a th:href="@{http://youtube.com}" class="link-card">
+               <h3>YouTube</h3>
+               <p>Platform berbagi video terbesar</p>
+           </a>
+           
+           <a th:href="@{http://scele.cs.ui.ac.id}" class="link-card">
+               <h3>SCELE Fasilkom UI</h3>
+               <p>Learning Management System Fasilkom UI</p>
+           </a>
+           
+           <a th:href="@{http://aren.cs.ui.ac.id}" class="link-card">
+               <h3>Aren CSUI</h3>
+               <p>Resource akademik Fasilkom UI</p>
+           </a>
+       </div>
+   </div>
+</body>
+</html>

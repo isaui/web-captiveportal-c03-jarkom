@@ -2055,3 +2055,16 @@
 2024/12/25 06:57:02 [emerg] 1#1: "proxy_ssl_server_name" directive is not allowed here in /etc/nginx/conf.d/default.conf:64
 2024/12/25 06:57:11 [emerg] 1#1: "proxy_ssl_server_name" directive is not allowed here in /etc/nginx/conf.d/default.conf:64
 2024/12/25 06:57:22 [emerg] 1#1: "proxy_ssl_server_name" directive is not allowed here in /etc/nginx/conf.d/default.conf:64
+2024/12/25 10:18:56 [emerg] 1#1: "proxy_set_header" directive is not allowed here in /etc/nginx/conf.d/default.conf:66
+2024/12/25 10:31:56 [emerg] 1#1: "proxy_set_header" directive is not allowed here in /etc/nginx/conf.d/default.conf:66
+2024/12/25 10:34:00 [emerg] 1#1: "proxy_set_header" directive is not allowed here in /etc/nginx/conf.d/default.conf:66
+2024/12/25 10:34:25 [emerg] 1#1: "proxy_set_header" directive is not allowed here in /etc/nginx/conf.d/default.conf:66
+2024/12/25 10:38:06 [emerg] 1#1: "proxy_set_header" directive is not allowed here in /etc/nginx/conf.d/default.conf:64
+2024/12/25 10:38:12 [emerg] 1#1: "proxy_set_header" directive is not allowed here in /etc/nginx/conf.d/default.conf:64
+2024/12/25 10:41:57 [emerg] 1#1: "proxy_ssl_server_name" directive is not allowed here in /etc/nginx/conf.d/default.conf:74
+2024/12/25 10:44:05 [notice] 1#1: using the "epoll" event method
+2024/12/25 10:44:05 [notice] 1#1: nginx/1.27.3
+2024/12/25 10:44:05 [notice] 1#1: built by gcc 13.2.1 20240309 (Alpine 13.2.1_git20240309) 
+2024/12/25 10:44:05 [notice] 1#1: OS: Linux 5.15.167.4-microsoft-standard-WSL2
+2024/12/25 10:44:05 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/12/25 10:44:05 [notice] 1#1: start worker processes
