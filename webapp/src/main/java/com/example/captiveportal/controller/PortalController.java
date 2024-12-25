@@ -29,7 +29,7 @@ public class PortalController {
         try {
             String ipAddress = ipAddressUtil.getClientIp(httpRequest);
             authService.login(request.getUsername(), request.getPassword(), ipAddress);
-            return "redirect:/";
+            return "redirect:/success";
         } catch (RuntimeException e) {
             System.out.println(e);
             redirectAttributes.addAttribute("error", e.getMessage());
@@ -78,5 +78,10 @@ public class PortalController {
             model.addAttribute("error", error);
         }
         return "register";
+    }
+
+    @GetMapping("/success")
+    public String successPage(Model model) {
+        return "success";
     }
 }

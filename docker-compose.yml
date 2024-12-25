@@ -23,7 +23,8 @@ services:
    depends_on:
      - db
    networks:
-     - portal_network
+     portal_network:
+      ipv4_address: 172.20.0.12
    ports:
      - "8080:8080"
    dns:
