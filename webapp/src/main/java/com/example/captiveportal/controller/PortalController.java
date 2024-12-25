@@ -60,10 +60,12 @@ public class PortalController {
         }
         
         String originalUrl = request.getHeader("X-Original-URL");
-        if (originalUrl == null || originalUrl.isEmpty()) {
-            return "success";  // akan merender success.html
+        System.out.println("Original URL: " + originalUrl); // Debug
+        
+        if (originalUrl == null || originalUrl.isEmpty() || originalUrl.equals("/")) {
+            return "success";
         }
-    
+        
         return "redirect:" + originalUrl;
     }
     @GetMapping("/login")
