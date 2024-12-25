@@ -8,22 +8,26 @@ services:
       POSTGRES_PASSWORD: password123
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    network_mode: "host"
+    networks:
+      - web-network
 
   webapp:
     build:
       context: ./webapp
     container_name: webapp
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/captiveportal
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/captiveportal
       SPRING_DATASOURCE_USERNAME: admin
       SPRING_DATASOURCE_PASSWORD: password123
     depends_on:
       - db
-    network_mode: "host"
-    dns:
-      - 8.8.8.8
-      - 8.8.4.4
+    networks:
+      - web-network
+
+networks:
+  web-network:
+    driver: bridge
 
 volumes:
   postgres_data:
+
