@@ -10,18 +10,15 @@ iptables -t nat -F
 # Allow established connections
 iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
-# NAT for internet access - gunakan eth0 (interface di dalam container)
-iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+# NAT untuk internet access
+iptables -t nat -A POSTROUTING -o ens4 -j MASQUERADE  # Gunakan interface host
 
-# Redirect HTTP traffic ke port 80
+# Redirect HTTP traffic ke nginx local
 iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 80
-
-# Redirect HTTPS traffic ke port 443
 iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 443
 
-# Basic forwarding rules
-iptables -A FORWARD -i eth0 -j ACCEPT
-iptables -A FORWARD -o eth0 -j ACCEPT
+# Tangkap semua HTTP request keluar
+iptables -t nat -A OUTPUT -p tcp --dport 80 ! -d 127.0.0.1 -j REDIRECT --to-port 80
 
-# Redirect outgoing HTTP traffic ke nginx (rule baru)
-iptables -t nat -A OUTPUT -p tcp --dport 80 ! -d 127.0.0.1 -j DNAT --to-destination 172.20.0.4:80
+# Allow forwarding
+iptables -P FORWARD ACCEPT
