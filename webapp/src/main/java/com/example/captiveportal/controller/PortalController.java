@@ -23,19 +23,21 @@ public class PortalController {
 
 
     @PostMapping("/login")
-    public String login(@ModelAttribute LoginRequest request, 
-                       HttpServletRequest httpRequest, 
-                       RedirectAttributes redirectAttributes) {
-        try {
-            String ipAddress = ipAddressUtil.getClientIp(httpRequest);
-            authService.login(request.getUsername(), request.getPassword(), ipAddress);
-            return "redirect:/success";
-        } catch (RuntimeException e) {
-            System.out.println(e);
-            redirectAttributes.addAttribute("error", e.getMessage());
-            return "redirect:/login";
-        }
+    public String login(@ModelAttribute LoginRequest request,
+                    HttpServletRequest httpRequest,
+                    RedirectAttributes redirectAttributes) {
+    try {
+        String ipAddress = ipAddressUtil.getClientIp(httpRequest);
+        System.out.println("Login attempt from IP: " + ipAddress);
+        authService.login(request.getUsername(), request.getPassword(), ipAddress);
+        System.out.println("Login successful");
+        return "redirect:/success";
+    } catch (RuntimeException e) {
+        System.out.println("Login failed: " + e.getMessage());
+        redirectAttributes.addAttribute("error", e.getMessage());
+        return "redirect:/login";
     }
+}
 
     @PostMapping("/register")
     public String register(@ModelAttribute RegisterRequest request, 
@@ -81,7 +83,12 @@ public class PortalController {
     }
 
     @GetMapping("/success")
-    public String successPage(Model model) {
-        return "success";
+    public String successPage(HttpServletRequest request) {
+    String ipAddress = ipAddressUtil.getClientIp(request);
+    System.out.println("Success page accessed by IP: " + ipAddress);
+    if (!authService.isAuthenticated(ipAddress)) {
+        return "redirect:/login";
     }
+    return "success";
+}
 }

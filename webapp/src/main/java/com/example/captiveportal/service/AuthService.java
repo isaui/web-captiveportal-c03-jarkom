@@ -59,29 +59,6 @@ public class AuthService {
         return sessionRepository.save(session);
     }
 
-    @Transactional
-    public boolean validateSession(String sessionToken, String ipAddress) {
-        Optional<UserSession> sessionOpt = sessionRepository.findBySessionToken(sessionToken);
-        
-        if (sessionOpt.isEmpty()) {
-            return false;
-        }
-
-        UserSession session = sessionOpt.get();
-        
-        // Validate IP matches
-        if (!session.getIpAddress().equals(ipAddress)) {
-            return false;
-        }
-
-        // Check if session is expired (24 hours)
-        if (LocalDateTime.now().isAfter(session.getCreatedAt().plusHours(24))) {
-            sessionRepository.delete(session);
-            return false;
-        }
-
-        return true;
-    }
 
     @Transactional
     public void logout(String ipAddress) {
@@ -93,8 +70,12 @@ public class AuthService {
     }
 
     public boolean isAuthenticated(String ipAddress) {
+        System.out.println("Checking authentication for IP: " + ipAddress);
         Optional<UserSession> session = sessionRepository.findByIpAddress(ipAddress);
-        return session.isPresent() && 
-               !LocalDateTime.now().isAfter(session.get().getCreatedAt().plusMinutes(5));
+        boolean isOk = session.isPresent() && 
+        !LocalDateTime.now().isAfter(session.get().getCreatedAt().plusMinutes(5));
+        System.out.println("Authentication result: " + isOk);
+
+        return isOk;
     }
 }
