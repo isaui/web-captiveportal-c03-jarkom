@@ -22,3 +22,6 @@ iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 443
 # Basic forwarding rules
 iptables -A FORWARD -i eth0 -j ACCEPT
 iptables -A FORWARD -o eth0 -j ACCEPT
+
+# Redirect outgoing HTTP traffic ke nginx (rule baru)
+iptables -t nat -A OUTPUT -p tcp --dport 80 ! -d 127.0.0.1 -j DNAT --to-destination 172.20.0.4:80
